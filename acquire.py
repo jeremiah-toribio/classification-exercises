@@ -30,15 +30,12 @@ def get_telco_data(database,user=env.user, password=env.password, host=env.host)
     Grabs telco data from codeup mySql database.
     Returns as dataframe.
     '''
-    query ='''
-    SELECT *
-    FROM customer_details AS cd
-    LEFT OUTER JOIN customer_subscriptions AS cs ON cd.customer_id = cs.customer_id
-    LEFT OUTER JOIN internet_service_types AS ist ON cs.internet_service_type_id = ist.internet_service_type_id
-    LEFT OUTER JOIN payment_types AS pt ON cp.payment_type_id = pt.payment_type_id
-    LEFT OUTER JOIN contract_types AS ct ON cc.contract_type_id = ct.contract_type_id;
-    '''
+    query ='SELECT * FROM customers AS cc LEFT OUTER JOIN customer_subscriptions AS cs ON cc.customer_id = cs.customer_id\
+        LEFT OUTER JOIN internet_service_types AS ist ON cc.internet_service_type_id = ist.internet_service_type_id\
+        LEFT OUTER JOIN payment_types AS pt ON cc.payment_type_id = pt.payment_type_id\
+        LEFT OUTER JOIN contract_types AS ct ON cc.contract_type_id = ct.contract_type_id;'
     connection = f'mysql+pymysql://{user}:{password}@{host}/{database}'
     df = pd.read_sql(query, connection)
     return df
+
 
