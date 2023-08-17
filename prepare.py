@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import env
+import acquire
 import os
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
@@ -24,10 +25,16 @@ def prep_titanic():
     Pulls data from mySql db and assigns as titanic.
     This function will drop duplicate columns and encode the rest of the categorical columns.
     '''
+    # acquire titanic
     titanic = acquire.get_titanic_data('titanic_db')
+    # drop duplicate or not useful information
     titanic = titanic.drop(columns=['class','embark_town','deck'])
-    dummy_sex = pd.get_dummies(titanic['sex'], drop_first=True).astype(int)
-    dummy_embarked = pd.get_dummies(titanic[['embarked']]).astype(int)
+    # handle nulls
+    titanic['age'] = titanic['age'].fillna(titanic.age.mean()).round()
+    titanic['embarked'] = titanic['embarked'].fillna(value='S')
+    # encode categories
+    dummy_sex = pd.get_dummies(titanic['sex'], drop_first=True).astype(float)
+    dummy_embarked = pd.get_dummies(titanic[['embarked']],drop_first=True).astype(float)
     dummy = pd.concat([dummy_sex,dummy_embarked], axis = 1)
     titanic = pd.concat([titanic,dummy], axis=1)
     return titanic
@@ -67,10 +74,11 @@ def prep_telco():
 
 def splitter(df,target='churn'):
     '''
-    
+    Returns
+    Train, Validate, Test
     '''
     train, test = train_test_split(df, test_size=.2, random_state=123, stratify=df[target])
 
     train, validate = train_test_split(train, test_size=.3, random_state=123, stratify=train[target])
 
-    return train, test, validate
+    return train, validate, test
