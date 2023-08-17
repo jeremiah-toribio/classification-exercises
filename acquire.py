@@ -4,7 +4,7 @@ import env
 import os
 
 
-def get_titanic_data(database,user=env.user, password=env.password, host=env.host):
+def get_titanic_data(database='titanic_db',user=env.user, password=env.password, host=env.host):
     '''
     Grabs titanic data from codeup mySql database if does not currently exist in users' system.
     Returns as dataframe.
@@ -14,7 +14,7 @@ def get_titanic_data(database,user=env.user, password=env.password, host=env.hos
     df = pd.read_sql(query, connection)
     return df
 
-def get_iris_data(database,user=env.user, password=env.password, host=env.host):
+def get_iris_data(database='iris_db',user=env.user, password=env.password, host=env.host):
     '''
     Grabs iris data from codeup mySql database if does not currently exist in users' system.
     Returns as dataframe.
@@ -25,7 +25,7 @@ def get_iris_data(database,user=env.user, password=env.password, host=env.host):
     return df
 
 
-def get_telco_data(database,user=env.user, password=env.password, host=env.host):
+def get_telco_data(database='telco_churn',user=env.user, password=env.password, host=env.host):
     '''
     Grabs telco data from codeup mySql database.
     Returns as dataframe.
