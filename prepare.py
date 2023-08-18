@@ -33,7 +33,7 @@ def prep_titanic():
     titanic['age'] = titanic['age'].fillna(titanic.age.mean()).round()
     titanic['embarked'] = titanic['embarked'].fillna(value='S')
     # encode categories
-    dummy_sex = pd.get_dummies(titanic['sex'], drop_first=True).astype(float)
+    dummy_sex = pd.get_dummies(titanic['sex'], drop_first=True).astype(int)
     dummy_embarked = pd.get_dummies(titanic[['embarked']],drop_first=True).astype(float)
     dummy = pd.concat([dummy_sex,dummy_embarked], axis = 1)
     titanic = pd.concat([titanic,dummy], axis=1)
